@@ -3,303 +3,438 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn & Play - Educational Platform</title>
+    <title>EduZen - Fun Learning for Kids</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='eduzen.png') }}">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Loader Container -->
+
+    <!-- Loader Container -->
   <iframe id="loader-frame" src="/loader" style="border: none; width: 100%; height: 100vh; position: fixed; top: 0; left: 0; z-index: 9999;"></iframe>
-  
+
   <script>
     // Wait until the loader is visible for a few seconds, then show the main content
     window.onload = function() {
         setTimeout(() => {
             document.getElementById("loader-frame").style.display = "none"; // Hide loader
             document.getElementById("content").style.display = "block"; // Show website content
-        }, 4000); // Adjust time as needed (5 seconds)
+        }, 2000); // Adjust time as needed (5 seconds)
     };
 </script>
 
 
-    <div class="paper-cut-rain">
-      
-
-
-        <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <div class="app">
-        <!-- Hero Section -->
-        <div class="hero">
-            <img src="https://images.unsplash.com/photo-1610484826967-09c5720778c7?auto=format&fit=crop&q=80&w=1000" 
-                 alt="Hero background" 
-                 class="hero-image">
-
-        
-                
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-
-                <h1>Learn & Play</h1>
-                <p>Embark on an exciting educational journey!</p>
-                <button class="primary-button" onclick="goToPage('/text')">
-                    <i data-lucide="play"></i>
-                    
-                    Learn with Text
-                </button>
-                
-                
-              
+    <div id="content" style="display: none;">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>🎓EduZen</h1>
             </div>
-        </div>
-    </div>
-    
+            <div class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link ">Home</a>
+                <a href="/text" class="nav-link" style="text-decoration: none;">Learn</a>
+                <a href="#games" class="nav-link">Games</a>
+                <a href="#about" class="nav-link">About</a>
 
-        <!-- Navigation -->
-        <nav class="nav">
-            <div class="container">
-                <div class="nav-buttons">
-                    <button class="nav-button" onclick="goToPage('/game1')">
-                        <i data-lucide="crown"></i>
-                        Featured Games
-                    </button>
-                    <button class="nav-button" onclick="goToPage('/game3')">
-                        <i data-lucide="book-open"></i>
-                        Language Skills
-                    </button>
-                    <button class="nav-button" onclick="goToPage('/game4')">
-                        <i data-lucide="calculator"></i>
-                        Math Adventures
-                    </button>
-                    <button class="nav-button" onclick="goToPage('/pz')">
-                      <i data-lucide="book-open"></i>
-                     Image puzzle 
-                  </button>
-                </div>
-            </div>
-        </nav>
-    
-        <!-- Games Grid -->
-        <main class="container">
-            <div class="games-grid">
-                <!-- Game Card 1 -->
-                <div class="game-card">
-                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=1000" 
-                         alt="Word Explorer">
-                    <div class="game-content">
-                        <h3>Word Explorer</h3>
-                        <div class="game-level">
-                            <i data-lucide="trophy"></i>
-                            <span>Beginner</span>
+                {% if session.get('user_id') %}
+                <div class="profile-container">
+                    <div class="profile-icon" id="profile-trigger">
+                        {{ session.get('student_name')[0].upper() }}
+                    </div>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="dropdown-header">
+                            <div class="avatar-large">{{ session.get('student_name')[0].upper() }}</div>
+                            <div class="user-info">
+                                <h3>{{ session.get('student_name') }}</h3>
+                                <p>Standard {{ session.get('standard') }}</p>
+                            </div>
                         </div>
-                        <div class="game-rating">
-                            <i data-lucide="star" class="star-icon"></i>
-                            <span>4.5</span>
+                        <div class="dropdown-body">
+                            <div class="progress-section">
+                                <div class="progress-label">
+                                    <span>Learning Progress</span>
+                                    <span>{{ avg_score }}%</span>
+                                </div>
+                                <div class="progress-bar-mini">
+                                    <div class="progress-fill" style="width: {{ avg_score }}%;"></div>
+                                </div>
+                            </div>
+                            <ul class="dropdown-links">
+                                <li><a href="/profile">👤 View My Profile</a></li>
+                                <li><a href="/start">📊 View Progress Card</a></li>
+                                <li><a href="/text">🚀 Knowledge Buddy</a></li>
+                                <li><a href="#games">🎮 My Games</a></li>
+                                <li><a href="/logout" class="logout-link">🔒 Logout</a></li>
+                            </ul>
                         </div>
-                        <button class="play-button" onclick="goToPage('/game2')">
-                            <i data-lucide="play"></i>
-                            Play Now
-                        </button>
                     </div>
                 </div>
+                {% else %}
+                <a href="/login" class="nav-link login-btn" style="color: white !important;">Login</a>
+                {% endif %}
 
-                <!-- Game Card 2 -->
-                <div class="game-card">
-                    <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&q=80&w=1000" 
-                         alt="Number Quest">
-                    <div class="game-content">
-                        <h3>puzzle games</h3>
-                        <div class="game-level">
-                            <i data-lucide="trophy"></i>
-                            <span>Intermediate</span>
-                        </div>
-                        <div class="game-rating">
-                            <i data-lucide="star" class="star-icon"></i>
-                            <span>4.8</span>
-                        </div>
-                        <button class="play-button" onclick="goToPage('/game1')">
-                            <i data-lucide="play"></i>
-                            Play Now
-                        </button>
-                    </div>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h2>Welcome to Your Learning Adventure!</h2>
+                    <p>Learn, Play, and Grow with EduZen's fun educational games and audios</p>
+                    {% if session.get('user_id') %}
+                        <a href="/text" class="cta-button" style="text-decoration: none;">Knowledge Buddy!</a>
+                    {% else %}
+                        <a href="/login" class="cta-button" style="text-decoration: none;">Login to Start Learning!</a>
+                    {% endif %}
+                    <a href="https://learnwith.pythonanywhere.com/" class="cta-button" style="text-decoration: none;">Generate Summary!</a>
+
                 </div>
+                <div class="hero-image">
+    <img src="{{ url_for('static', filename='eduzen.png') }}" alt="Logo" class="floating-logo">
 
-                <!-- Game Card 3 -->
-                <div class="game-card">
-                    <img src="{{ url_for('static', filename='adv.jpg') }}" alt="Spelling Heroes">
+</div>
 
-                    <div class="game-content">
-                        <h3>BODMAS Game</h3>
-                        <div class="game-level">
-                            <i data-lucide="trophy"></i>
-                            <span>Advanced</span>
+<style>
+.hero-image {
+    position: relative;
+    width: 100%;
+    height: 300px; /* adjust as needed */
+
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floating-logo {
+    width: 700px; /* adjust size */
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%   { transform: translate(0, 0); }
+    25%  { transform: translate(15px, -10px); }
+    50%  { transform: translate(0, -20px); }
+    75%  { transform: translate(-15px, -10px); }
+    100% { transform: translate(0, 0); }
+}
+</style>
+
+            </div>
+
+        <!-- Featured Games Section on Home -->
+<section class="home-games" id="games">
+    <div class="section-header">
+        <h2>🎮 Featured Learning Games</h2>
+        <p>Play fun games while you learn new skills!</p>
+    </div>
+
+    <!-- Only ONE featured-games-grid wrapper -->
+    <div class="featured-games-grid">
+
+        <!-- Game 1 -->
+        <div class="featured-game-card" data-game="quiz">
+            <div class="game-preview">
+                <img src="{{ url_for('static', filename='game1.png') }}" alt="Game Preview" style="width: 100%; height: auto; display: block; object-fit: contain;">
+                <div class="game-icon-large"></div>
+                <div class="game-overlay">
+                    {% if session.get('user_id') %}
+                        <a style="text-decoration: none;" href="{{ url_for('game1') }}" class="play-game-btn" >
+                            <i data-lucide="play"></i> Play Now
+                        </a>
+                    {% else %}
+                        <a style="text-decoration: none;" href="/login" class="play-game-btn" >
+                            <i data-lucide="lock"></i> Login to Play
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="game-details">
+                <h3>Quiz Master</h3>
+                <p>Test your knowledge with fun quizzes across all subjects!</p>
+                <div class="game-meta">
+                    <span class="difficulty easy">🟢 Easy</span>
+                    <span class="players">👥 Single Player</span>
+                </div>
+                <div class="game-stats-mini">
+                    <span>🏆 Best Score: 85%</span>
+                    <span>⚡ Avg Time: 5 min</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 2 -->
+        <div class="featured-game-card" data-game="quiz">
+            <div class="game-preview">
+                <img src="{{ url_for('static', filename='game2.png') }}" alt="Game Preview" style="width: 100%; height: auto; display: block; object-fit: contain;">
+
+                <div class="game-overlay">
+                    {% if session.get('user_id') %}
+                        <a style="text-decoration: none;" href="{{ url_for('game2') }}" class="play-game-btn" >
+                            <i data-lucide="play"></i> Play Now
+                        </a>
+                    {% else %}
+                        <a style="text-decoration: none;" href="/login" class="play-game-btn" >
+                            <i data-lucide="lock"></i> Login to Play
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="game-details">
+                <h3>Quiz Master</h3>
+                <p>Test your knowledge with fun quizzes across all subjects!</p>
+                <div class="game-meta">
+                    <span class="difficulty easy">🟢 Easy</span>
+                    <span class="players">👥 Single Player</span>
+                </div>
+                <div class="game-stats-mini">
+                    <span>🏆 Best Score: 95%</span>
+                    <span>⚡ Avg Time: 4 min</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 3 -->
+        <div class="featured-game-card" data-game="quiz">
+            <div class="game-preview">
+                <img src="{{ url_for('static', filename='game3.png') }}" alt="Game Preview" style="width: 100%; height: auto; display: block; object-fit: contain;">
+
+                <div class="game-overlay">
+                    {% if session.get('user_id') %}
+                        <a style="text-decoration: none;" href="{{ url_for('game3') }}" class="play-game-btn" >
+                            <i data-lucide="play"></i> Play Now
+                        </a>
+                    {% else %}
+                        <a style="text-decoration: none;" href="/login" class="play-game-btn" >
+                            <i data-lucide="lock"></i> Login to Play
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="game-details">
+                <h3>Quiz Master</h3>
+                <p>Test your knowledge with fun quizzes across all subjects!</p>
+                <div class="game-meta">
+                    <span class="difficulty easy">🟢 Easy</span>
+                    <span class="players">👥 Single Player</span>
+                </div>
+                <div class="game-stats-mini">
+                    <span>🏆 Best Score: 75%</span>
+                    <span>⚡ Avg Time: 2 min</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 4 -->
+        <div class="featured-game-card" data-game="quiz">
+            <div class="game-preview">
+                <img src="{{ url_for('static', filename='game4.png') }}" alt="Game Preview" style="width: 100%; height: auto; display: block; object-fit: contain;">
+
+                <div class="game-overlay">
+                    {% if session.get('user_id') %}
+                        <a style="text-decoration: none;" href="{{ url_for('game4') }}" class="play-game-btn" >
+                            <i data-lucide="play"></i> Play Now
+                        </a>
+                    {% else %}
+                        <a style="text-decoration: none;" href="/login" class="play-game-btn" >
+                            <i data-lucide="lock"></i> Login to Play
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="game-details">
+                <h3>Quiz Master</h3>
+                <p>Test your knowledge with fun quizzes across all subjects!</p>
+                <div class="game-meta">
+                    <span class="difficulty easy">🟢 Easy</span>
+                    <span class="players">👥 Single Player</span>
+                </div>
+                <div class="game-stats-mini">
+                    <span>🏆 Best Score: 60%</span>
+                    <span>⚡ Avg Time: 5 min</span>
+                </div>
+            </div>
+        </div>
+
+         <!-- Game 5  -->
+        <div class="featured-game-card" data-game="quiz">
+            <div class="game-preview">
+                <img src="{{ url_for('static', filename='image.png') }}" alt="Game Preview" style="width: 100%; height: auto; display: block; object-fit: contain;">
+                <div class="game-icon-large"></div>
+                <div class="game-overlay">
+                    {% if session.get('user_id') %}
+                        <a style="text-decoration: none;" href="{{ url_for('game5') }}" class="play-game-btn" >
+                            <i data-lucide="play"></i> Play Now
+                        </a>
+                    {% else %}
+                        <a style="text-decoration: none;" href="/login" class="play-game-btn" >
+                            <i data-lucide="lock"></i> Login to Play
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="game-details">
+                <h3>Quiz Master</h3>
+                <p>Test your knowledge with fun quizzes across all subjects!</p>
+                <div class="game-meta">
+                    <span class="difficulty easy">🟢 Easy</span>
+                    <span class="players">👥 Single Player</span>
+                </div>
+                <div class="game-stats-mini">
+                    <span>🏆 Best Score: 85%</span>
+                    <span>⚡ Avg Time: 10 min</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+
+          <!-- About Section on Home -->
+        <section class="home-about" id="about">
+            <div class="section-header">
+                <h2>Why Choose EduZen?</h2>
+                <p>Making learning an adventure for young minds</p>
+            </div>
+
+            <div class="about-features">
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Learn Through Play</h3>
+                    <p>Educational games that make learning fun and engaging for children aged 6-12</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📹</div>
+                    <h3>Interactive Videos</h3>
+                    <p>High-quality educational videos designed specifically for young learners</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Reward System</h3>
+                    <p>Earn points, badges, and achievements to stay motivated and track progress</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile Friendly</h3>
+                    <p>Learn anywhere, anytime with our responsive design that works on all devices</p>
+                </div>
+            </div>
+
+            <div class="stats-showcase">
+                <div class="stat-showcase">
+                    <div class="stat-number">10,000+</div>
+                    <div class="stat-text">Happy Students</div>
+                </div>
+                <div class="stat-showcase">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-text">Learning Activities</div>
+                </div>
+                <div class="stat-showcase">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-text">Educational Videos</div>
+                </div>
+                <div class="stat-showcase">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-text">Parent Satisfaction</div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Contact Section on Home -->
+        <section class="home-contact" id="contact">
+            <div class="contact-container">
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h2>Ready to Start Learning?</h2>
+                        <p>Join thousands of students already learning with EduZen!</p>
+
+                        <div class="contact-features">
+                            <div class="contact-feature">
+                                <span class="feature-check">✅</span>
+                                <span>Safe and secure learning environment</span>
+                            </div>
+                            <div class="contact-feature">
+                                <span class="feature-check">✅</span>
+                                <span>Age-appropriate content for 6-12 years</span>
+                            </div>
+                            <div class="contact-feature">
+                                <span class="feature-check">✅</span>
+                                <span>Progress tracking for parents</span>
+                            </div>
+                            <div class="contact-feature">
+                                <span class="feature-check">✅</span>
+                                <span>24/7 customer support</span>
+                            </div>
                         </div>
-                        <div class="game-rating">
-                            <i data-lucide="star" class="star-icon"></i>
-                            <span>4.3</span>
-                        </div>
-                        <button class="play-button">
-                            <i data-lucide="play"></i>
-                            <a href="/game5" style="text-decoration:none;color:white">Play Now</a>
-                        </button>
+
+                         <div class="contact-buttons">
+                           {% if session.get('user_id') %}
+                               <a style="text-decoration: none;" href="/text" class="primary-btn">
+                                    <span>Start Learning Now</span>
+                                    <span class="btn-icon">🚀</span>
+                                </a>
+                           {% else %}
+                               <a style="text-decoration: none;" href="/login" class="primary-btn">
+                                    <span>Login to Start Learning</span>
+                                    <span class="btn-icon">🔒</span>
+                                </a>
+                           {% endif %}
+                         </div>
+                    </div>
+
+<div class="contact-form-mini">
+    <h3>Quick Contact</h3>
+    <form class="mini-form" id="quickContactForm" action="/getdata" method="POST">
+    <input type="text" name="parent_name" placeholder="Parent's Name" required>
+    <input type="email" name="email" placeholder="Email Address" required>
+    <input type="number" name="child_age" placeholder="Child's Age" required>
+
+    <select name="interest" required>
+        <option value="">Select Interest</option>
+        <option value="math">Math</option>
+        <option value="science">Science</option>
+        <option value="english">English</option>
+        <option value="art">Art</option>
+        <option value="all">All Subjects</option>
+    </select>
+
+    <textarea name="message" placeholder="Any questions or special requirements?" rows="3"></textarea>
+
+    <button type="submit" class="form-submit-btn">
+        <span>Get Started</span>
+        <span class="submit-icon">📤</span>
+    </button>
+</form>
+
+</div>
+
                     </div>
                 </div>
             </div>
-        </main>
-    </div>
+        </section>
 
 
+    </div> <!-- End of content -->
 
-    <script>
-        lucide.createIcons();
-    </script>
-    
-     <!-- Animated Background -->
-  <div class="animated-background">
-    <div class="gradient-sphere"></div>
-    <div class="gradient-sphere"></div>
-    <div class="gradient-sphere"></div>
-  </div>
-</div>
- 
-<!-- Features Section -->
-<div class="container">
-<section class="features" id="features">
-    <h2 class="section-title">Why Choose Us?</h2>
-    <div class="features-grid">
-      <div class="feature-card glass-card">
-        <i data-lucide="wand-2"></i>
-        <h3>Challenges & Quests</h3>
-        <p>Interactive missions make learning engaging.</p>
-      </div>
-      <div class="feature-card glass-card">
-        <i data-lucide="speaker"></i>
-        <h3>Personalized Learning Paths</h3>
-        <p> AI adapts courses based on a learner’s pace and style.</p>
-      </div>
-      <div class="feature-card glass-card">
-        <i data-lucide="languages"></i>
-        <h3>Multi-Language</h3>
-        <p>Support for Multiple languages and accents</p>
-      </div>
-      <div class="feature-card glass-card">
-        <i data-lucide="clock"></i>
-        <h3>Chatbots & Virtual Tutors</h3>
-        <p> 24/7 AI assistants help answer queries</p>
-      </div>
-    </div>
-    
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="contact">
-    <h2 class="section-title">Get in Touch</h2>
-    <div class="contact-container">
-      <div class="contact-info">
-        <div class="contact-item">
-          <i data-lucide="mail"></i>
-          <div>
-            <h3>Email</h3>
-            <p>saichechare63@gmail.com</p>
-          </div>
-        </div>
-        <div class="contact-item">
-          <i data-lucide="phone"></i>
-          <div>
-            <h3>Phone</h3>
-            <p>9730746958</p>
-          </div>
-        </div>
-        <div class="contact-item">
-          <i data-lucide="map-pin"></i>
-          <div>
-            <h3>Location</h3>
-            <p>Sandip University Nashik(422213)</p>
-          </div>
-        </div>
-      </div>
-      <form class="contact-form glass-card" action="/getdata" method="POST">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" required placeholder="Enter Your Name">
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required placeholder="Enter Your Email">
-        </div>
-        <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message"  name= "message" required placeholder="Message"></textarea>
-        </div>
-        <button type="submit" class="btn-primary">
-          <i data-lucide="send"></i>
-          Send Message
-        </button>
-      </form>
-    </div>
-  </section>
-</div>
-</div>
-</main>
-
-<!-- Footer -->
-<footer class="footer">
-<div class="container">
-  <div class="footer-content">
-    <div class="footer-brand">
-      <div class="logo">
-        <i data-lucide="bot" class="logo-icon"></i>
-        <span>Automated Feedback & Assessment </span>
-      </div>
-      <p>AI provides instant corrections and performance tracking.</p>
-      <div class="social-links">
-        <a href="#"><i data-lucide="twitter"></i></a>
-        <a href="#"><i data-lucide="facebook"></i></a>
-        <a href="#"><i data-lucide="instagram"></i></a>
-        <a href="#"><i data-lucide="linkedin"></i></a>
-      </div>
-    </div>
-    <div class="footer-links">
-      <div class="footer-section">
-        <h3>Games</h3>
-        <a href="/game2">Word Explorer</a>
-        <a href="/game1">puzzle games</a>
-        <a href="/game3">Typing Speed</a>
-        <a href="/game4">Advance Math</a>
-      </div>
-      <div class="footer-section">
-        <h3>Company</h3>
-        <a href="#">About Us</a>
-        <a href="#">Blog</a>
-        <a href="#">Careers</a>
-        <a href="#">Contact</a>
-      </div>
-      <div class="footer-section">
-        <h3>Legal</h3>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Cookie Policy</a>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <div class="copyright-notice">
-      <p>© 2025 SUN Coder's. All rights reserved.</p>
-      <ul>
-        <li>All generated content must comply with our content guidelines and terms of service.</li>
-        <li>Users are responsible for obtaining necessary rights and permissions for any copyrighted material used.</li>
-      
-      </ul>
-    </div>
-  </div>
-</div>
-</footer>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-      lucide.createIcons();
-    });
-  </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+     <elevenlabs-convai agent-id="agent_9801kk3bkz7aezhb4v7tg0sfr71d"></elevenlabs-convai>
+    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 </body>
 </html>

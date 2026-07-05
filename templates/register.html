@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - EduZen</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+        .register-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h2 { text-align: center; margin-bottom: 2rem; color: #60a5fa; font-size: 2rem; }
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #94a3b8; font-size: 0.9rem; }
+        input, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus { border-color: #3b82f6; }
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 1rem;
+        }
+        button:hover { background: #1d4ed8; }
+        .login-link { text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: #94a3b8; }
+        .login-link a { color: #60a5fa; text-decoration: none; }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="register-card">
+        <h2>Join EduZen! 🚀</h2>
+        <form action="/register" method="POST">
+            <div class="form-group">
+                <label>Student Name</label>
+                <input type="text" name="student_name" placeholder="Enter student's name" required>
+            </div>
+            <div class="form-group">
+                <label>Standard (Grade)</label>
+                <select name="standard" required>
+                    <option value="" disabled selected>Select Standard</option>
+                    <script>
+                        for(let i=1; i<=12; i++) {
+                            document.write(`<option value="${i}">Standard ${i}</option>`);
+                        }
+                    </script>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Parent's Contact No</label>
+                <input type="tel" name="parent_contact" placeholder="Enter mobile number" required>
+            </div>
+            <div class="form-group">
+                <label>Parent's Email ID</label>
+                <input type="email" name="parent_email" placeholder="Enter email address" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Create a password" required>
+            </div>
+            <button type="submit">Create Account</button>
+        </form>
+        <div class="login-link">
+            Already have an account? <a href="/login">Log In</a>
+        </div>
+    </div>
+</body>
+</html>

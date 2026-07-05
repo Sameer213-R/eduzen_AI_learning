@@ -3,4 +3,4 @@ python-dotenv
 gTTS
 openpyxl
 google-generativeai
-smtplib  
+smtplib

@@ -3,138 +3,425 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCQ Questions</title>
+    <title>Learning Challenge | EduZen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 20px;
-            padding: 20px;
+        :root {
+            --primary: #4f46e5;
+            --secondary: #ec4899;
+            --success: #10b981;
+            --error: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
         }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
         .container {
             max-width: 800px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
         }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
         h1 {
-            text-align: center;
-            color: #333;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
         }
-        .question {
-            margin-bottom: 15px;
-            font-size: 18px;
-            font-weight: bold;
+
+        .subtitle {
+            color: var(--text-gray);
+            font-weight: 500;
         }
-        .options {
-            margin-left: 20px;
+
+        .quiz-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
         }
-        .option {
-            margin: 5px 0;
-        }
-        .correct {
-            color: green;
-            font-weight: bold;
-        }
-        .incorrect {
-            color: red;
-            font-weight: bold;
-        }
-        .progress-bar {
-            width: 100%;
-            background-color: #ddd;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        .progress {
-            height: 20px;
-            background-color: #4CAF50;
-            width: 0%;
-            text-align: center;
+
+        .question-num {
+            display: inline-block;
+            background: var(--primary);
             color: white;
-            line-height: 20px;
-            border-radius: 5px;
+            padding: 0.25rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option-label:hover {
+            border-color: var(--primary);
+            background: #f5f3ff;
+        }
+
+        .option-label input {
+            display: none;
+        }
+
+        .option-label.selected {
+            border-color: var(--primary);
+            background: #f5f3ff;
+            font-weight: 600;
+        }
+
+        .option-label.correct {
+            border-color: var(--success);
+            background: #ecfdf5;
+            color: var(--success);
+        }
+
+        .option-label.incorrect {
+            border-color: var(--error);
+            background: #fef2f2;
+            color: var(--error);
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 3rem auto;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary), #6366f1);
+            color: white;
+            border: none;
+            border-radius: 3rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(79, 70, 229, 0.4);
+        }
+
+        /* Results Modal/Card Styles */
+        #results-banner {
+            display: none;
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 2rem;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 4px solid var(--primary);
+            margin: 4rem 0;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .score-val {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stars {
+            font-size: 2rem;
+            color: #fbbf24;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn-secondary {
+            padding: 0.75rem 1.5rem;
+            background: #e2e8f0;
+            color: var(--text-dark);
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .progress-container {
+            position: sticky;
+            bottom: 2rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.05);
+            margin-top: 3rem;
+            z-index: 10;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar-bg {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), #34d399);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 1.75rem; }
+            .quiz-card { padding: 1.5rem; }
+            .results-actions { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Generated MCQs</h1>
+    <header>
+        <h1>EduZen Challenge</h1>
+        <p class="subtitle">Test your knowledge and earn points! 🚀</p>
+    </header>
+
     <form id="quiz-form">
         {% if mcq_response %}
             {% set questions = mcq_response.split('\n\n') %}
+            {% set valid_q_count = 0 %}
             {% for question in questions %}
-                {% set lines = question.split('\n') %}
-                <div class="question">
-                    {{ lines[0] }} <!-- Display the question -->
-                </div>
-                <div class="options">
-                    {% for option in lines[1:] %}
-                        {% if option %}
-                            <!-- Remove the "(Correct)" marker from the displayed text -->
-                            {% set option_text = option.replace("(Correct)", "") %}
-                            <label>
-                                <input type="checkbox" name="q{{ loop.index0 }}" value="{{ option }}">
-                                {{ option_text }}
-                            </label><br>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <hr>
+                {% set lines = question.strip().split('\n') %}
+                {% if lines|length >= 2 %}
+                    <div class="quiz-card" data-question-index="{{ loop.index0 }}">
+                        <span class="question-num">Question {{ loop.index }}</span>
+                        <div class="question-text">{{ lines[0] }}</div>
+                        
+                        <div class="options-grid">
+                            {% for option in lines[1:] %}
+                                {% if option.strip() %}
+                                    {% set option_text = option.replace("(Correct)", "").strip() %}
+                                    <label class="option-label">
+                                        <input type="radio" name="q{{ loop.index0 }}" value="{{ option }}">
+                                        {{ option_text }}
+                                    </label>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
             {% endfor %}
-            <button type="button" onclick="checkAnswers()">Submit</button>
+            <button type="button" class="submit-btn" id="submit-quiz-btn" onclick="checkAnswers()">Finish Quiz</button>
         {% else %}
-            <p>No MCQs generated yet. Please generate MCQs first.</p>
+            <div class="quiz-card" style="text-align: center;">
+                <p>No questions ready yet. Go back and chat with the Knowledge Buddy to generate some!</p>
+                <a href="/text" style="display: inline-block; margin-top: 1rem; color: var(--primary); font-weight: 600;">Go to Chat</a>
+            </div>
         {% endif %}
     </form>
 
-    <div class="progress-bar">
-        <div id="progress" class="progress">0%</div>
+    <div id="results-banner">
+        <div class="stars" id="result-stars">⭐⭐⭐</div>
+        <div class="score-circle">
+            <div class="score-val" id="score-circle-val">0</div>
+            <div class="score-label" id="score-circle-total">OUT OF 5</div>
+        </div>
+        <h2 id="final-status">Quiz Complete! 🎊</h2>
+        <p id="final-score-detail" style="color: var(--text-gray); margin-top: 0.5rem;"></p>
+        
+        <div class="results-actions">
+            <button type="button" class="submit-btn" style="margin: 0;" onclick="window.location.reload()">Try Again 🔄</button>
+            <a href="/text" class="btn-secondary">New Topic 📚</a>
+        </div>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-info">
+            <span>Quiz Progress</span>
+            <span id="score-text">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div id="progress-fill" class="progress-bar-fill"></div>
+        </div>
     </div>
 </div>
 
 <script>
-    // Alert message when the page loads
-    window.onload = function() {
-        alert("Please select only one option per question to generate proper progress.");
-    };
+    // Handle option selection styling
+    document.querySelectorAll('.option-label').forEach(label => {
+        label.addEventListener('click', function() {
+            const group = this.closest('.options-grid');
+            group.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
 
     function checkAnswers() {
         let correctCount = 0;
-        let totalQuestions = document.querySelectorAll(".question").length;
-        let selectedOptions = document.querySelectorAll("input[type='checkbox']:checked");
+        let totalQuestions = document.querySelectorAll(".quiz-card").length;
+        let answeredQuestions = 0;
 
-        if (selectedOptions.length === 0) {
-            alert("Please answer at least one question!");
-            return;
-        }
+        document.querySelectorAll(".quiz-card").forEach((card) => {
+            const selected = card.querySelector('input[type="radio"]:checked');
+            
+            if (selected) {
+                answeredQuestions++;
+                const isCorrect = selected.value.includes("(Correct)");
+                const parent = selected.parentElement;
 
-        // Reset all labels to default styling
-        document.querySelectorAll("label").forEach((label) => {
-            label.classList.remove("correct", "incorrect");
-        });
+                // Reset labels in this card
+                card.querySelectorAll('.option-label').forEach(l => {
+                    l.classList.remove('correct', 'incorrect');
+                });
 
-        // Check each selected option
-        selectedOptions.forEach((option) => {
-            let isCorrect = option.value.includes("(Correct)"); // Check if the option is correct
-            let parent = option.parentElement; // Get the parent label
-
-            if (isCorrect) {
-                parent.classList.add("correct");
-                correctCount++;
-            } else {
-                parent.classList.add("incorrect");
+                if (isCorrect) {
+                    parent.classList.add("correct");
+                    correctCount++;
+                } else {
+                    parent.classList.add("incorrect");
+                    // Highlight the correct one
+                    card.querySelectorAll('input').forEach(input => {
+                        if (input.value.includes("(Correct)")) {
+                            input.parentElement.classList.add("correct");
+                        }
+                    });
+                }
             }
         });
 
-        // Update progress bar
-        let progress = Math.round((correctCount / totalQuestions) * 100);
-        document.getElementById("progress").style.width = progress + "%";
-        document.getElementById("progress").innerText = progress + "%";
+        if (answeredQuestions < totalQuestions) {
+            if (!confirm(`You only answered ${answeredQuestions} out of ${totalQuestions} questions. Submit anyway?`)) {
+                return;
+            }
+        }
 
-        alert(`You got ${correctCount} out of ${totalQuestions} correct!`);
+        // Calculate and show results
+        const scorePercent = Math.round((correctCount / totalQuestions) * 100);
+        document.getElementById("progress-fill").style.width = scorePercent + "%";
+        document.getElementById("score-text").innerText = scorePercent + "%";
+
+        // Save progress to database
+        fetch('/save-quiz', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ score: correctCount, total: totalQuestions })
+        })
+        .then(response => response.json())
+        .then(data => console.log('Progress saved:', data))
+        .catch(error => console.error('Error saving progress:', error));
+
+        // Hide submit button, show results
+        document.getElementById("submit-quiz-btn").style.display = "none";
+        document.getElementById("results-banner").style.display = "block";
+        
+        // Update Score Card
+        document.getElementById("score-circle-val").innerText = correctCount;
+        document.getElementById("score-circle-total").innerText = `OUT OF ${totalQuestions}`;
+        document.getElementById("final-score-detail").innerText = `You scored ${scorePercent}% on this challenge.`;
+        
+        // Set Stars and Status
+        const starsEl = document.getElementById("result-stars");
+        const statusEl = document.getElementById("final-status");
+        
+        if (scorePercent === 100) {
+            starsEl.innerText = "⭐⭐⭐⭐⭐";
+            statusEl.innerText = "Perfect Score! 🌟";
+        } else if (scorePercent >= 80) {
+            starsEl.innerText = "⭐⭐⭐⭐";
+            statusEl.innerText = "Excellent Work! 🎉";
+        } else if (scorePercent >= 60) {
+            starsEl.innerText = "⭐⭐⭐";
+            statusEl.innerText = "Great Job! 👍";
+        } else if (scorePercent >= 40) {
+            starsEl.innerText = "⭐⭐";
+            statusEl.innerText = "Keep Trying! 💪";
+        } else {
+            starsEl.innerText = "⭐";
+            statusEl.innerText = "Study Harder! 📚";
+        }
+
+        // Scroll to results
+        document.getElementById("results-banner").scrollIntoView({ behavior: 'smooth' });
     }
 </script>
 

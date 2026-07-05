@@ -11,7 +11,7 @@
     box-sizing: border-box;
 }
 
- 
+
 body {
   align-items: center;
   background: var(--background);
@@ -95,7 +95,7 @@ body {
 </head>
 <body>
 
-   
+
   <!-- Animated Background -->
   <div class="animated-background">
     <div class="gradient-sphere"></div>
@@ -104,7 +104,7 @@ body {
   </div>
   <div class="loader">
     <script>
-      
+
 // Add parallax effect to background spheres
 window.addEventListener('mousemove', (e) => {
   const spheres = document.querySelectorAll('.gradient-sphere');
@@ -137,7 +137,7 @@ window.addEventListener('mousemove', (e) => {
 
     <div id="success-message" class="success-message hidden">
       <div class="message-content">
-    
+
         <p>Completed the puzzle <span id="finalMoves">0</span> moves!</p>
         <button id="nextBtn" class="next-btn">Next Puzzle</button>
       </div>
@@ -154,7 +154,7 @@ window.addEventListener('mousemove', (e) => {
       name: 'Puzzle 2'
     }
   ];
-  
+
   let moves = 0;
   let pieces = [];
   let currentPuzzleIndex = 0;
@@ -165,86 +165,86 @@ window.addEventListener('mousemove', (e) => {
   const successMessage = document.getElementById('success-message');
   const finalMoves = document.getElementById('finalMoves');
   const nextBtn = document.getElementById('nextBtn');
-  
+
   function initializePuzzle() {
     const puzzle = puzzles[currentPuzzleIndex];
     document.getElementById('complete-image').querySelector('img').src = puzzle.imageUrl;
-  
+
     puzzleBoard.innerHTML = '';
     moves = 0;
     movesDisplay.textContent = moves;
     pieces = [];
-  
+
     for (let i = 0; i < boardSize * boardSize; i++) {
       const piece = document.createElement('div');
       piece.className = 'puzzle-piece';
-  
+
       if (i !== boardSize * boardSize - 1) {
         const x = (i % boardSize) * 100;
         const y = Math.floor(i / boardSize) * 100;
-  
+
         piece.style.backgroundImage = `url(${puzzle.imageUrl})`;
         piece.style.backgroundPosition = `-${x}px -${y}px`;
         piece.dataset.correctIndex = i;
-  
+
         piece.addEventListener('click', () => movePiece(piece));
       }
-  
+
       pieces.push(piece);
       puzzleBoard.appendChild(piece);
     }
-  
+
     shufflePieces();
   }
-  
+
   function shufflePieces() {
     pieces.sort(() => Math.random() - 0.5);
     pieces.forEach(piece => puzzleBoard.appendChild(piece));
   }
-  
+
   function movePiece(piece) {
     const emptyPieceIndex = pieces.findIndex(p => p.dataset.correctIndex === undefined);
     const pieceIndex = pieces.indexOf(piece);
-  
+
     // Calculate row and column of the clicked piece and the empty piece
     const pieceRow = Math.floor(pieceIndex / boardSize);
     const pieceCol = pieceIndex % boardSize;
     const emptyRow = Math.floor(emptyPieceIndex / boardSize);
     const emptyCol = emptyPieceIndex % boardSize;
-  
+
     // Allow movement only if the piece is adjacent to the empty piece
-    if ((Math.abs(pieceRow - emptyRow) === 1 && pieceCol === emptyCol) || 
+    if ((Math.abs(pieceRow - emptyRow) === 1 && pieceCol === emptyCol) ||
         (Math.abs(pieceCol - emptyCol) === 1 && pieceRow === emptyRow)) {
-      
+
       // Swap piece with the empty spot
       [pieces[emptyPieceIndex], pieces[pieceIndex]] = [pieces[pieceIndex], pieces[emptyPieceIndex]];
       puzzleBoard.innerHTML = '';
       pieces.forEach(p => puzzleBoard.appendChild(p));
-  
+
       moves++;
       movesDisplay.textContent = moves;
-  
+
       checkCompletion();
     }
   }
-  
+
   function checkCompletion() {
     if (pieces.every((piece, index) => piece.dataset.correctIndex == index)) {
       finalMoves.textContent = moves;
       successMessage.classList.add('visible');
     }
   }
-  
+
   function goToNextPuzzle() {
     currentPuzzleIndex = (currentPuzzleIndex + 1) % puzzles.length;
     successMessage.classList.remove('visible');
     initializePuzzle();
   }
-  
+
   shuffleBtn.addEventListener('click', shufflePieces);
   nextBtn.addEventListener('click', goToNextPuzzle);
   window.addEventListener('load', initializePuzzle);
-  
+
   </script>
 </body>
 </html>

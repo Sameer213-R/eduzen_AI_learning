@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | EduZen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #ec4899;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .profile-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            border-radius: 2rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary), #6366f1);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            background: white;
+            color: var(--primary);
+            font-size: 3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .profile-header h2 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .profile-body {
+            padding: 2rem;
+        }
+
+        .info-group {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 1rem;
+            background: #f1f5f9;
+            border-radius: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .info-group:hover {
+            transform: translateX(5px);
+            background: #e2e8f0;
+        }
+
+        .info-icon {
+            font-size: 1.5rem;
+            width: 45px;
+            height: 45px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .info-content label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-gray);
+            font-weight: 700;
+            margin-bottom: 0.1rem;
+        }
+
+        .info-content span {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .back-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 1rem;
+            font-weight: 700;
+            margin-top: 1rem;
+            transition: filter 0.2s;
+        }
+
+        .back-btn:hover {
+            filter: brightness(1.1);
+        }
+
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .home-link:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="avatar">{{ user.name[0].upper() }}</div>
+            <h2>{{ user.name }}</h2>
+            <p>Student Adventurer 🎒</p>
+        </div>
+
+        <div class="profile-body">
+            <div class="info-group">
+                <div class="info-icon">📧</div>
+                <div class="info-content">
+                    <label>Email Address</label>
+                    <span>{{ user.email }}</span>
+                </div>
+            </div>
+
+            <div class="info-group">
+                <div class="info-icon">🏫</div>
+                <div class="info-content">
+                    <label>Grade of Study</label>
+                    <span>Standard {{ user.standard }}</span>
+                </div>
+            </div>
+
+            <div class="info-group">
+                <div class="info-icon">📱</div>
+                <div class="info-content">
+                    <label>Contact Number</label>
+                    <span>{{ user.contact }}</span>
+                </div>
+            </div>
+
+            <a href="/" class="back-btn">Back to Dashboard</a>
+            <a href="/text" class="home-link">Go to Knowledge Buddy 🚀</a>
+        </div>
+    </div>
+
+</body>
+</html>
